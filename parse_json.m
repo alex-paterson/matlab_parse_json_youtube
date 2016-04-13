@@ -105,6 +105,11 @@ function [data json] = parse_object(json)
                     ME.throw;
                 end
                 name = strcat('Y_',name);
+                indices = strfind(name, '-');
+                for i = 1:length(indices)
+                    name( indices(i)) = '_';
+                end
+                
                 data.(name) = value;
                 json = remaining_json;
                 
@@ -173,7 +178,7 @@ end
 
 function [num json] = parse_number(json)
     num = [];
-	if ~isempty(json)
+    if ~isempty(json)
         % Validate the floating point number using a regular expression
         [s e] = regexp(json,'^[\w]?[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?[\w]?','once');
         if ~isempty(s)
