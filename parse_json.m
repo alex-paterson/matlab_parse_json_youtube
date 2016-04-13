@@ -11,6 +11,18 @@ function [data json] = parse_json(json)
 % disp(matlab_results{1}.responseData.results{1}.visibleUrl)
 
     data = cell(0,1);
+    
+    global valid_names;
+    valid_names = [
+        'label', ...
+        'segment', ...
+        'annotations', ...
+        'duration', ...
+        'resolution', ...
+        'subset', ...
+        'url'
+    ];
+    
 
     while ~isempty(json)
         [value json] = parse_value(json);
@@ -104,11 +116,22 @@ function [data json] = parse_object(json)
                     ME = MException('json:parse_object',['Can not have an empty name: ' json]);
                     ME.throw;
                 end
-                name = strcat('Y_',name);
+         
+                
+                % Replace dashes with underscores
                 indices = strfind(name, '-');
-                for i = 1:length(indices)
-                    name( indices(i)) = '_';
+                if length(indices) > 0
+                    for i = 1:length(indices)
+                        name( indices(i)) = '_';
+                    end
                 end
+                if isempty(strfind(valid_names,name))
+                    % Prepend 'Y_'
+                    name = strcat('Y_',name);
+                end
+                
+                % Feedback
+                fprintf('%s\n', name);
                 
                 data.(name) = value;
                 json = remaining_json;
