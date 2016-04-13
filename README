@@ -5,7 +5,7 @@ In MATLAB (R2015b), field names in a structure can only contain alphanumeric cha
 
 My modifications cause all field names to be prepended with 'Y_', and all dashes to be replaces with underscores. This must be factored into further use of the structure generated.
 
-##Original Description:##
+## Original Description:
 
 "This function parses JSON strings. It converts JSON arrays into cell arrays and JSON objects into structures.
 
